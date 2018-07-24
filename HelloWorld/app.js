@@ -5,7 +5,7 @@ const os = require('os');
 const notes = require('./notes');
 const _ = require('lodash');
 
-var add = notes.add(2, 6);
+var add = notes.add(2, 10);
 
 console.log(add);
 
