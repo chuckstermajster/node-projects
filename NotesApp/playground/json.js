@@ -11,7 +11,7 @@ const fs = require('fs');
 
 var originalNote = {
     title: 'title111111',
-    body: 'body'
+    body: 'bodyddd'
 };
 
 var originalNoteString = JSON.stringify(originalNote);
