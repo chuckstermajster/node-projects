@@ -40,13 +40,19 @@ var getNote = (note) => {
     console.log('getting note', note);
 };
 
-var removeNote = (note) => {
-    console.log('removing note: ', note);
+var removeNote = (noteToDelete) => {
+    var currentNotes = fetchNotes();
+    var notesAfterDelete = currentNotes.filter((note) => note.title !== noteToDelete );
+    saveNotes(notesAfterDelete);
+
+    return currentNotes.length !== notesAfterDelete.length;
 }
 module.exports = {
 addNote,
 getAll,
 getNote,
-removeNote
+removeNote,
+fetchNotes,
+saveNotes
 };
 
