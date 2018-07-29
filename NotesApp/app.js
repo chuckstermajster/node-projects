@@ -1,30 +1,53 @@
-console.log('starting app');
 
-const lodash = require('lodash');
+
+
 const notes = require('./notes');
 const yargs = require('yargs');
+var titleOptions = {
+    describe: 'Title of a note',
+        demand: true,
+        alias: 't'
+}
+var bodyOptions = {
+    describe: 'Body of a note',
+    demand: true,
+    alias: 'b'
+}
 
-const argv = yargs.argv;
-
+const argv = yargs
+.command('add', 'Add a new note', {
+    title: titleOptions,
+    body: bodyOptions
+})
+.command('list', 'list all notes')
+.command('read', 'read a note', {title: titleOptions})
+.command('remove', 'remove a note', {title: titleOptions})
+.help()
+.argv;
 var command = argv._[0];
-console.log('Command ', command);
-console.log('Process ', process.argv);
-console.log('Yargs ', argv);
 
 if (command === 'add'){
     var note = notes.addNote(argv.title, argv.body);
     if (note){
-        console.log('note created');
-        console.log('---')
-        console.log(`Title: ${note.title} Text: ${note.body}`);
-    } else {
+        console.log('note created!');
+        notes.logNote(note);
+        
+    } else {caches
         console.log('title taken');
     }
 
 } else if (command === 'list'){
-    notes.getAll();
-} else if (command === 'read'){
-    notes.getNote(argv.title)
+   var allNotes =  notes.getAll();
+   console.log(`Printing ${allNotes.length} note(s)`);
+   allNotes.forEach((note) => notes.logNote(note));
+} else if (command === 'read'){    
+    var note = notes.getNote(argv.title);
+    if(note){
+        notes.logNote(note);
+    } else {
+        console.log("note not found");
+    }
+
 } else if (command === 'remove'){    
    var noteRemoved = notes.removeNote(argv.title);
 

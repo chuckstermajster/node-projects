@@ -1,5 +1,3 @@
-console.log("starting notes");
-
 const fs = require('fs');
 
 var fetchNotes = () => {
@@ -33,11 +31,19 @@ if(duplicateNotes.length === 0){
 };
 
 var getAll = () => {
-    console.log('getting all notes');
+    return fetchNotes();
 };
 
-var getNote = (note) => {
-    console.log('getting note', note);
+var getNote = (title) => {
+    console.log('getting note');
+    var notes = fetchNotes();    
+    try{
+        var selectedNote = notes.filter((selectedNote) => title === selectedNote.title);
+        return selectedNote[0];
+    }
+    catch(e) {
+        return false;
+    }    
 };
 
 var removeNote = (noteToDelete) => {
@@ -47,12 +53,19 @@ var removeNote = (noteToDelete) => {
 
     return currentNotes.length !== notesAfterDelete.length;
 }
+
+var logNote = (note) => {
+    debugger;
+    console.log('---')
+    console.log(`Title: ${note.title} Text: ${note.body}`);
+};
 module.exports = {
 addNote,
 getAll,
 getNote,
 removeNote,
 fetchNotes,
-saveNotes
+saveNotes,
+logNote
 };
 
