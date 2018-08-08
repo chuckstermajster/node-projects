@@ -1,5 +1,6 @@
-const request = require('request');
 const yargs = require('yargs');
+const geocode = require('./geocode/geocode');
+const weather = require('./weather/weather');
 const argv = yargs
 .options({
     a: {
@@ -13,12 +14,23 @@ const argv = yargs
 .alias('help', 'h')
 .argv;
 
-var encodedAdress = encodeURIComponent(argv.a);
-request({
-    url: `https://maps.googleapis.com/maps/api/geocode/json?address=warszawska%2023%2041200%20Sosnowiec`,
-    json: true
-}, (error, response, body) => {
-console.log(body.results[0].formatted_address);
-console.log(`Latitude: ${body.results[0].geometry.location.lat}`);
-console.log(`Longitude: ${body.results[0].geometry.location.lng}`);
+geocode.geocodeAddress(argv.address, (errorMessage, results) => {
+    if(errorMessage){
+        console.log(errorMessage);
+    }else {
+        console.log(results.address);
+        weather.getWeather(results.latitude, results.longitude, (errorMessage, weatherResults) => {
+            if(errorMessage){
+                console.log(errorMessage);
+            }else {
+                console.log(JSON.stringify(weatherResults, undefined, 2));
+                //console.log(weatherResults.apparentTemperature);
+            }
+        });
+    }
 });
+
+
+
+
+
